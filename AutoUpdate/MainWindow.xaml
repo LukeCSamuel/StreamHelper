@@ -1,0 +1,51 @@
+﻿<Window x:Class="AutoUpdate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutoUpdate"
+        mc:Ignorable="d"
+		WindowStyle="None"
+		ResizeMode="NoResize"
+		AllowsTransparency="True"
+        Title="Stream Helper - Updater"
+		Height="140"
+		Width="340"
+		MouseDown="WindowMouseDown"
+		Loaded="OnLoaded"
+		WindowStartupLocation="CenterScreen">
+	<Window.Style>
+		<Style TargetType="Window">
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
+	</Window.Style>
+    <Grid>
+		<Grid.Effect>
+			<DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2" />
+		</Grid.Effect>
+		<Grid.Style>
+			<Style TargetType="Grid">
+				<Setter Property="Background" Value="#111111" />
+				<Setter Property="Margin" Value="20,20,20,20" />
+			</Style>
+		</Grid.Style>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="3*" />
+			<RowDefinition Height="2*" />
+			<RowDefinition Height="1*" />
+		</Grid.RowDefinitions>
+
+		<Label Grid.Row="0" Style="{StaticResource HeaderStyle}" Padding="0,0,0,0">
+			<DockPanel Margin="0">
+				<Label Content="⭳" Style="{StaticResource HeaderStyle}" FontWeight="Bold" />
+				<Label Content="Downloading Update" Style="{StaticResource HeaderStyle}" />
+			</DockPanel>
+		</Label>
+		<Label x:Name="_lblStatus" Grid.Row="1"
+			   Content="Calculating ..."
+			   Style="{StaticResource StatusStyle}" />
+		<ProgressBar Name="_progressBar" Grid.Row="2"
+					 Maximum="100"
+					 Value="7" />
+	</Grid>
+</Window>

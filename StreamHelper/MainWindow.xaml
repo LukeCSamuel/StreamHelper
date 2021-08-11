@@ -1,0 +1,164 @@
+﻿<controls:DechromeWindow x:Class="StreamHelper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        xmlns:local="clr-namespace:StreamHelper"
+		xmlns:models="clr-namespace:StreamHelper.Models"
+		xmlns:controls="clr-namespace:StreamHelper.Controls"
+        mc:Ignorable="d"
+        Title="Stream Helper"
+		Height="450"
+		MinHeight="150"
+		Width="800"
+		MinWidth="300"
+		WindowStyle="None"
+		Style="{StaticResource WindowStyle}"
+		Loaded="WindowLoaded">
+
+	<WindowChrome.WindowChrome>
+		<StaticResource ResourceKey="WindowChrome" />
+	</WindowChrome.WindowChrome>
+	<controls:DechromeWindow.DataContext>
+		<local:MainWindowViewModel />
+	</controls:DechromeWindow.DataContext>
+
+	<Grid>
+		<!--#region Grid Definitions-->
+		<Grid.Resources>
+			<Style BasedOn="{StaticResource LabelStyle}" TargetType="{x:Type Label}" />
+			<Style BasedOn="{StaticResource ButtonStyle}" TargetType="{x:Type Button}" />
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="1*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*" MinWidth="100" />
+			<ColumnDefinition Width="3" />
+			<ColumnDefinition Width="3*" MinWidth="200" />
+		</Grid.ColumnDefinitions>
+		<!--#endregion-->
+
+		<!--#region Menu-->
+		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+			<MenuItem Header="_File">
+				<MenuItem Header="_Browse..." Click="OpenBrowse" />
+				<MenuItem Header="_Options..." Click="OpenOptions" />
+				<Separator />
+				<MenuItem Header="E_xit" Click="Close" />
+			</MenuItem>
+			<MenuItem Header="_Package">
+				<MenuItem Header="I_nstall..." Click="InstallPack" />
+				<!--<MenuItem Header="_Config..." />-->
+			</MenuItem>
+		</Menu>
+		<!--#endregion-->
+		
+		<!--#region Left Panel-->
+		<Grid Grid.Row="1" Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="1*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<Label Grid.Row="0" Grid.Column="0"
+				   Content="{Binding ObsConnectionDescription}"
+				   HorizontalAlignment="Left" />
+			<Button Grid.Row="0" Grid.Column="1"
+					Padding="7,3"
+					Content="{Binding ObsConnectionVerb}"
+					Click="ToggleObsConnection" />
+
+			<ItemsControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+					 HorizontalContentAlignment="Stretch"
+					 ItemsSource="{Binding ObsScenes}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="{x:Type models:SceneView}">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							
+							<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+								   Content="{Binding Path=SceneName}"
+								   FontWeight="Bold" />
+							<Label Grid.Row="1" Grid.Column="0"
+								   Content="View:">
+								<Label.Style>
+									<Style BasedOn="{StaticResource LabelStyle}" TargetType="{x:Type Label}">
+										<Setter Property="Visibility" Value="Hidden" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Path=HasView}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Label.Style>
+							</Label>
+							<Label Grid.Row="1" Grid.Column="1"
+								   Content="{Binding Path=ViewName}">
+								<Label.Style>
+									<Style BasedOn="{StaticResource LabelStyle}" TargetType="{x:Type Label}">
+										<Setter Property="Visibility" Value="Hidden" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Path=HasView}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Label.Style>
+							</Label>
+							<Button Grid.Row="1" Grid.Column="2"
+									Padding="7,3"
+									Content="Preview"
+									Click="PreviewScene">
+								<Button.Style>
+									<Style BasedOn="{StaticResource ButtonStyle}" TargetType="{x:Type Button}">
+										<Setter Property="Visibility" Value="Hidden" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Path=HasView}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+							</Button>
+						</Grid>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</Grid>
+		<!--#endregion-->
+
+		<!--#region Splitter-->
+		<GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" >
+			<GridSplitter.Style>
+				<Style TargetType="GridSplitter">
+					<Setter Property="Background">
+						<Setter.Value>
+							<SolidColorBrush Color="{StaticResource Black}" />
+						</Setter.Value>
+					</Setter>
+				</Style>
+			</GridSplitter.Style>
+		</GridSplitter>
+		<!--#endregion-->
+
+		<!--#region Cef-->
+		<cef:ChromiumWebBrowser x:Name="_browser" Grid.Row="1" Grid.Column="2"
+								Address="{Binding HelperAddress}" />
+		<!--#endregion-->
+	</Grid>
+</controls:DechromeWindow>

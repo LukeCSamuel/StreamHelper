@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Logo2.ico</ApplicationIcon>
+		<StartupObject>AutoUpdate.Program</StartupObject>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Logo2.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Logo2.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DownloadController\DownloadController.csproj" />
+    <ProjectReference Include="..\dupGuard\dupGuard.csproj" />
+  </ItemGroup>
+
+</Project>

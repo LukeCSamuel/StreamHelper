@@ -1,0 +1,182 @@
+﻿<controls:DechromeWindow x:Class="StreamHelper.Browse"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:local="clr-namespace:StreamHelper"
+						 xmlns:models="clr-namespace:DownloadShared;assembly=DownloadShared"
+				         xmlns:controls="clr-namespace:StreamHelper.Controls"
+                         mc:Ignorable="d"
+						 Height="300"
+						 MinHeight="150"
+						 Width="500"
+						 MinWidth="300"
+						 WindowStyle="None"
+						 Style="{StaticResource WindowStyle}"
+						 Title="Browse Stream Packs"
+						 Loaded="OnLoad">
+	<WindowChrome.WindowChrome>
+		<StaticResource ResourceKey="WindowChrome" />
+	</WindowChrome.WindowChrome>
+	<controls:DechromeWindow.DataContext>
+		<local:BrowseViewModel />
+	</controls:DechromeWindow.DataContext>
+
+	<Grid>
+		<Grid.Resources>
+			<Style BasedOn="{StaticResource LabelStyle}" TargetType="{x:Type Label}" />
+			<Style BasedOn="{StaticResource ButtonStyle}" TargetType="{x:Type Button}">
+				<Setter Property="Background">
+					<Setter.Value>
+						<SolidColorBrush Color="{StaticResource Background}" />
+					</Setter.Value>
+				</Setter>
+				<Setter Property="IsEnabled" Value="{Binding DataContext.IsNotDownloading, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" />
+			</Style>
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="1*" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<StackPanel Grid.Row="0"
+					Orientation="Horizontal"
+					Margin="5,5,5,5">
+			<Label Content="Downloaded Packs"
+				   FontSize="16" />
+			<Label Content="{Binding DownloadedPackCount}"
+				   VerticalAlignment="Bottom" />
+		</StackPanel>
+		<ItemsControl Grid.Row="1"
+					  HorizontalContentAlignment="Stretch"
+					  ItemsSource="{Binding DownloadedPacks}"
+					  Margin="15,5,5,5">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate DataType="{x:Type models:PackListItem}">
+					<DataTemplate.Resources>
+						<Style TargetType="{x:Type Grid}">
+							<Setter Property="Background">
+								<Setter.Value>
+									<SolidColorBrush Color="{StaticResource LightBackground}" />
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Margin" Value="5,5,5,5" />
+						</Style>
+					</DataTemplate.Resources>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+						<Label Grid.Row="0" Grid.Column="0"
+							   Content="{Binding Path=Meta.Name}" />
+						<StackPanel Grid.Row="1" Grid.Column="0"
+									Orientation="Horizontal">
+							<Label Content="Version:"
+								   FontSize="10" />
+							<Label Content="{Binding Path=Meta.Version}"
+								   FontSize="10" />
+						</StackPanel>
+
+						<StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+									Orientation="Vertical">
+							<Button Content="Update"
+									Click="Download">
+								<Button.Style>
+									<Style BasedOn="{StaticResource ButtonStyle}" TargetType="{x:Type Button}">
+										<Setter Property="Visibility" Value="Collapsed" />
+										<Setter Property="Background">
+											<Setter.Value>
+												<SolidColorBrush Color="{StaticResource Background}" />
+											</Setter.Value>
+										</Setter>
+										<Setter Property="IsEnabled" Value="{Binding DataContext.IsNotDownloading, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding Path=UpdateAvailable}" Value="True">
+												<Setter Property="Visibility" Value="Visible" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Button.Style>
+							</Button>
+							<Button Content="Select"
+									Click="Select" />
+						</StackPanel>
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		<StackPanel Grid.Row="2"
+					Orientation="Horizontal"
+					Margin="5,20,5,5">
+			<Label Content="Online Packs"
+				   FontSize="16" />
+			<Label Content="{Binding OnlinePackCount}"
+				   VerticalAlignment="Bottom" />
+		</StackPanel>
+		<ItemsControl Grid.Row="3"
+					  HorizontalContentAlignment="Stretch"
+					  ItemsSource="{Binding OnlinePacks}"
+					  Margin="15,5,5,5">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate DataType="{x:Type models:PackListItem}">
+					<DataTemplate.Resources>
+						<Style TargetType="{x:Type Grid}">
+							<Setter Property="Background">
+								<Setter.Value>
+									<SolidColorBrush Color="{StaticResource LightBackground}" />
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Margin" Value="5,5,5,5" />
+						</Style>
+					</DataTemplate.Resources>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+						<Label Grid.Row="0" Grid.Column="0"
+							   Content="{Binding Path=Meta.Name}" />
+						<StackPanel Grid.Row="1" Grid.Column="0"
+									Orientation="Horizontal">
+							<Label Content="Version:"
+								   FontSize="10" />
+							<Label Content="{Binding Path=Meta.Version}"
+								   FontSize="10" />
+						</StackPanel>
+
+						<StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+									Orientation="Vertical">
+							<Button Content="Download"
+									Click="Download" />
+						</StackPanel>
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+
+		<Label x:Name="_lblProgress" Grid.Row="5"
+			   Visibility="Hidden" />
+		<ProgressBar x:Name="_progressBar" Grid.Row="6" 
+					 Minimum="0"
+					 Maximum="100"
+					 Value="7"
+					 Height="20"
+					 Visibility="Hidden" />
+	</Grid>
+</controls:DechromeWindow>

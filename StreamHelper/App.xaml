@@ -1,0 +1,232 @@
+﻿<Application x:Class="StreamHelper.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:StreamHelper"
+			 xmlns:controls="clr-namespace:StreamHelper.Controls"
+             StartupUri="MainWindow.xaml">
+	<Application.Resources>
+		<!--#region Colors -->
+		<Color x:Key="Black">#000000</Color>
+		<Color x:Key="Background">#111111</Color>
+		<Color x:Key="LightBackground">#222222</Color>
+		<Color x:Key="Edge">#303033</Color>
+		<Color x:Key="Highlight">#424242</Color>
+		<Color x:Key="DarkWhite">#dddddd</Color>
+		<Color x:Key="OffWhite">#f1f1f1</Color>
+		<Color x:Key="White">#ffffff</Color>
+		<Color x:Key="LightBlue">#2288dd</Color>
+		<Color x:Key="Red">#d10000</Color>
+		<Color x:Key="Purple">#7700c1</Color>
+		<!--#endregion-->
+		
+		<!--#region Buttons-->
+		<Style x:Key="ButtonStyle" TargetType="Button">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								Padding="{TemplateBinding Padding}">
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Padding" Value="7,3" />
+			<Setter Property="Margin" Value="5" />
+			<Setter Property="Background">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource LightBackground}" />
+				</Setter.Value>
+			</Setter>
+			<Setter Property="BorderBrush">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource Edge}" />
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Foreground">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource OffWhite}" />
+				</Setter.Value>
+			</Setter>
+			<Style.Triggers>
+				<Trigger Property="IsEnabled" Value="False">
+					<Setter Property="Foreground">
+						<Setter.Value>
+							<SolidColorBrush Color="{StaticResource Highlight}" />
+						</Setter.Value>
+					</Setter>
+				</Trigger>
+				<MultiTrigger>
+					<MultiTrigger.Conditions>
+						<Condition Property="IsEnabled" Value="True" />
+						<Condition Property="IsMouseOver" Value="True" />
+					</MultiTrigger.Conditions>
+					<Setter Property="Background">
+						<Setter.Value>
+							<SolidColorBrush Color="{StaticResource Highlight}" />
+						</Setter.Value>
+					</Setter>
+				</MultiTrigger>
+				<Trigger Property="IsFocused" Value="True">
+					<Setter Property="BorderBrush">
+						<Setter.Value>
+							<SolidColorBrush Color="{StaticResource LightBlue}" />
+						</Setter.Value>
+					</Setter>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+		<!--#endregion-->
+		
+		<!--#region Labels-->
+		<Style x:Key="LabelStyle" TargetType="Label">
+			<Setter Property="Foreground">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource OffWhite}" />
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<!--#endregion-->
+
+		<!--#region Progress Bar-->
+		<Style TargetType="ProgressBar">
+			<Setter Property="Background">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource LightBackground}" />
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Foreground">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource Purple}" />
+				</Setter.Value>
+			</Setter>
+			<Setter Property="BorderThickness" Value="0" />
+		</Style>
+		<!--#endregion-->
+
+		<!--#region Window -->
+		<WindowChrome x:Key="WindowChrome"
+			ResizeBorderThickness="6"
+			CaptionHeight="30"
+			CornerRadius="0"
+			GlassFrameThickness="0">
+		</WindowChrome>
+		<Style x:Key="WindowStyle" TargetType="controls:DechromeWindow">
+			<Setter Property="Background">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource Background}" />
+				</Setter.Value>
+			</Setter>
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="BorderBrush">
+				<Setter.Value>
+					<SolidColorBrush Color="{StaticResource Edge}" />
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="controls:DechromeWindow">
+						<Border Background="{TemplateBinding Background}"
+								BorderThickness="{TemplateBinding BorderThickness}"
+								BorderBrush="{TemplateBinding BorderBrush}">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="30" />
+									<RowDefinition Height="1*" />
+								</Grid.RowDefinitions>
+
+								<Grid Grid.Row="0">
+									<Grid.Background>
+										<SolidColorBrush Color="{StaticResource LightBackground}" />
+									</Grid.Background>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="0" />
+										<ColumnDefinition Width="1*" />
+										<ColumnDefinition Width="45" />
+										<ColumnDefinition Width="45" />
+										<ColumnDefinition Width="45" />
+									</Grid.ColumnDefinitions>
+									<Grid.Resources>
+										<Style x:Key="CaptionButton" TargetType="Button">
+											<Setter Property="Foreground">
+												<Setter.Value>
+													<SolidColorBrush Color="{StaticResource White}" />
+												</Setter.Value>
+											</Setter>
+											<Setter Property="Background" Value="Transparent" />
+											<Setter Property="FontSize" Value="12" />
+											<Setter Property="Template">
+												<Setter.Value>
+													<ControlTemplate TargetType="Button">
+														<Border Background="{TemplateBinding Background}" BorderThickness="0">
+															<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+														</Border>
+													</ControlTemplate>
+												</Setter.Value>
+											</Setter>
+											<Style.Triggers>
+												<Trigger Property="IsMouseOver" Value="True">
+													<Setter Property="Background">
+														<Setter.Value>
+															<SolidColorBrush Color="{StaticResource Highlight}" />
+														</Setter.Value>
+													</Setter>
+												</Trigger>
+											</Style.Triggers>
+										</Style>
+									</Grid.Resources>
+
+									<!--<Image Grid.Column="0" Source="res\Logo2.png" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+
+									<Label Grid.Column="1" Content="{TemplateBinding Title}">
+										<Label.Foreground>
+											<SolidColorBrush Color="{StaticResource OffWhite}" />
+										</Label.Foreground>
+									</Label>
+
+									<Button Grid.Column="2" x:Name="PART_MinimizeButton" WindowChrome.IsHitTestVisibleInChrome="True" Content="🗕" Style="{StaticResource CaptionButton}" />
+									<Button Grid.Column="3" x:Name="PART_MaximizeButton" WindowChrome.IsHitTestVisibleInChrome="True" Content="🗖" Style="{StaticResource CaptionButton}" />
+									<Button Grid.Column="4" x:Name="PART_CloseButton" WindowChrome.IsHitTestVisibleInChrome="True" Content="🗙" IsEnabled="{TemplateBinding CanClose}">
+										<Button.Style>
+											<Style TargetType="Button" BasedOn="{StaticResource CaptionButton}">
+												<Style.Triggers>
+													<Trigger Property="IsMouseOver" Value="True">
+														<Setter Property="Background">
+															<Setter.Value>
+																<SolidColorBrush Color="{StaticResource Red}" />
+															</Setter.Value>
+														</Setter>
+													</Trigger>
+												</Style.Triggers>
+											</Style>
+										</Button.Style>
+									</Button>
+								</Grid>
+								<AdornerDecorator Grid.Row="1">
+									<ContentPresenter />
+								</AdornerDecorator>
+							</Grid>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsActive" Value="True">
+								<Setter Property="BorderBrush">
+									<Setter.Value>
+										<SolidColorBrush Color="{StaticResource LightBlue}" />
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+							<Trigger Property="WindowState" Value="Maximized">
+								<Setter Property="BorderThickness" Value="6" />
+								<Setter TargetName="PART_MaximizeButton" Property="Content" Value="🗗" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<!--#endregion-->
+	</Application.Resources>
+</Application>
