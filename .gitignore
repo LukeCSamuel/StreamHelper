@@ -389,3 +389,6 @@ FodyWeavers.xsd
 
 # secrets
 appsettings*.json
+
+# private tools
+Packer/
